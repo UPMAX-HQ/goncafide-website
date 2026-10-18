@@ -278,6 +278,43 @@ const formats = [
 >
   <JsonLd slot="jsonld" schema={schema} />
 
+  <!-- PDF kapağı — yalnızca baskıda görünür -->
+  <section class="pdf-cover print-only">
+    <Tangle class="pdf-cover-tangle" />
+    <div class="pdf-cover-inner">
+      <div class="pdf-lockup">
+        <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <rect width="64" height="64" rx="14" fill="#F6ECF3"/>
+          <text x="31" y="46" text-anchor="middle" font-family="Lora, Georgia, serif"
+                font-size="44" font-style="italic" fill="#3D2150">g</text>
+          <circle cx="45" cy="22" r="4.5" fill="#B14CC0"/>
+        </svg>
+        <div>
+          <b>Gonca Fide</b>
+          <span>birbirine bağlar güçlendirir</span>
+        </div>
+      </div>
+
+      <div class="pdf-cover-mid">
+        <p class="pdf-kicker">Kurumsal Eğitim Kataloğu</p>
+        <h1>Kurumlar için<br /><em>Şiddetsiz İletişim</em></h1>
+        <p class="pdf-sub">
+          Tıkanmış bir anlaşmazlığı dönüştürmekten tek oturumluk atölyelere, bire bir
+          koçluktan uzun soluklu programlara — dört ayrı çalışma biçimi.
+        </p>
+      </div>
+
+      <div class="pdf-cover-foot">
+        <dl class="pdf-stats">
+          {stats.map((st) => (<div><dt>{st.n}</dt><dd>{st.l}</dd></div>))}
+        </dl>
+        <p class="pdf-cover-meta">
+          <b>Gonca Fide</b> · CNVC Sertifikalı Eğitmen · 2026–2027 kataloğu
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- Hero -->
   <section class="kat-hero">
     <Tangle class="kat-tangle" />
@@ -701,15 +738,26 @@ const formats = [
     </div>
   </section>
 
-  <!-- Yalnızca PDF çıktısında görünen künye -->
-  <section class="print-only">
-    <div class="container-site">
-      <p class="kat-note">
-        Gonca Fide · CNVC Sertifikalı Şiddetsiz İletişim Eğitmeni · info@goncafide.com ·
-        goncafide.com · @goncolog · Ankara · Online · Yerinde
+  <!-- PDF arka kapağı — yalnızca baskıda -->
+  <section class="pdf-back print-only">
+    <Tangle class="pdf-back-tangle" />
+    <div class="pdf-back-inner">
+      <h2>Kurumunuza özel bir eğitim konuşalım</h2>
+      <p>İhtiyaçlarınızı paylaşın; size en uygun içeriği birlikte tasarlayalım. İhtiyaç görüşmesi bir yükümlülük doğurmaz.</p>
+      <dl class="pdf-contact">
+        <div><dt>E-posta</dt><dd>info@goncafide.com</dd></div>
+        <div><dt>Web</dt><dd>goncafide.com/kurumsal</dd></div>
+        <div><dt>Instagram</dt><dd>@goncolog</dd></div>
+        <div><dt>Konum</dt><dd>Ankara · Online · Yerinde</dd></div>
+      </dl>
+      <p class="pdf-back-note">
+        Şiddetsiz İletişim, Center for Nonviolent Communication (CNVC) tarafından dünya
+        çapında paylaşılan bir farkındalık disiplinidir. Gonca Fide CNVC Sertifikalı
+        Eğitmen ve Şiddetsiz İletişim Türkiye Derneği üyesidir.
       </p>
     </div>
   </section>
+
 </PageLayout>
 
 <style>
@@ -1044,24 +1092,155 @@ const formats = [
 </style>
 
 <style is:global>
-  /* PDF çıktısı: site kabuğu ve ekrana özel öğeler çıkar, içerik kalır. */
+  /* ────────────────────────────────────────────────────────────────────
+     PDF çıktısı. Katalog ekranda kaydırılan bir sayfa, basılıyken bir
+     belge: kendi kapağı, bölüm başına sayfa düzeni ve arka kapağı var.
+     Kaynak tek — PDF bu sayfadan basılıyor, iki sürüm ayrı düşemiyor.
+     ──────────────────────────────────────────────────────────────────── */
   @media print {
+    @page { size: A4; margin: 17mm 16mm 16mm; }
+    /* Kapaklar kenardan kenara bassın diye kendi sayfa türleri var —
+       negatif boşlukla taşırmak önceki sayfaya mor şerit sızdırıyordu. */
+    @page cover { size: A4; margin: 0; }
+    .pdf-cover, .pdf-back { page: cover; }
+    /* Alıntılar da kenarsız kendi sayfalarına — yarı dolu sayfa yerine
+       kasıtlı bir duraklama. Adlandırılmış sayfa kırılımı kendisi yapar. */
+    @page quote { size: A4; margin: 0; }
+    .kat-quote { page: quote; }
+
+    html, body { background: #fff; }
+
+    /* Ekrana ait kabuk ve öğeler çıkar */
     header, footer, #mobile-menu, .no-print, [data-print-hide] { display: none !important; }
+    /* Kapak kahramanın ve rakam şeridinin işini üstlendi */
+    .kat-hero, .kat-stats { display: none !important; }
+
     .print-only { display: block !important; }
-    body { background: #fff; }
-    .kat-hero, .kat-stats, .kat-quote {
-      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+
+    /* Renkler basılsın */
+    .pdf-cover, .pdf-back, .kat-quote, .sec-art, .kat-cta,
+    .gains, .steps, .long, .svc { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    /* ── Kapak ─────────────────────────────────────────────────────── */
+    .pdf-cover {
+      position: relative; overflow: hidden;
+      height: 297mm; width: 210mm; box-sizing: border-box;
+      background: linear-gradient(158deg, #3D2150 0%, #281536 100%);
+      color: #F6ECF3; break-after: page;
     }
-    .kat-quote, .sec-head-art { break-inside: avoid; }
-    .sec-art { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    /* Bölümler bir sayfaya sığmayacak kadar büyük; bütünlüklerini zorlamak
-       sayfa sonlarında yarım sayfalık boşluklar bırakıyor. Yalnızca küçük,
-       tekrar eden öğeler bölünmesin. */
-    section { padding-block: 1.6rem !important; }
-    /* Modüller bölünmesin; seri bir sayfaya sığmayacak kadar uzun olabilir,
-       onu zorlamak sayfa sonlarında büyük boşluklar bırakıyor. */
-    .module, .long, .gain, .svc, .steps li, .csteps li, .ticks li, .cv li { break-inside: avoid; }
-    .kat-h2, .series-head { break-after: avoid; }
+    .pdf-cover-inner {
+      position: relative; z-index: 1; height: 100%;
+      padding: 24mm 18mm 18mm;
+      display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .pdf-cover .pdf-cover-tangle {
+      position: absolute; z-index: 0; right: -14%; top: 22%;
+      width: 78%; height: auto; color: #C5A5D8; opacity: 0.22;
+    }
+    .pdf-lockup { display: flex; align-items: center; gap: 4mm; }
+    .pdf-lockup svg { width: 13mm; height: 13mm; }
+    .pdf-lockup b {
+      display: block; font-family: var(--font-display); font-weight: 400;
+      font-size: 17pt; letter-spacing: -0.01em; line-height: 1;
+    }
+    .pdf-lockup span {
+      display: block; margin-top: 2mm; font-size: 6.5pt; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase; color: #C5A5D8;
+    }
+    .pdf-kicker {
+      font-size: 7.5pt; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: #C5A5D8; margin-bottom: 6mm;
+    }
+    .pdf-cover h1 {
+      font-family: var(--font-display); font-weight: 400; color: #F6ECF3;
+      font-size: 40pt; line-height: 1.05; letter-spacing: -0.03em; margin: 0;
+    }
+    .pdf-cover h1 em { font-style: italic; color: #C5A5D8; }
+    .pdf-sub {
+      margin-top: 7mm; max-width: 108mm; font-size: 10.5pt; line-height: 1.5;
+      color: rgba(246, 236, 243, 0.8);
+    }
+    .pdf-stats {
+      margin: 0 0 7mm; padding-top: 6mm; border-top: 0.4mm solid rgba(246, 236, 243, 0.22);
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm;
+    }
+    .pdf-stats > div { display: block; }
+    .pdf-stats dt {
+      font-family: var(--font-display); font-size: 19pt; line-height: 1;
+      color: #C5A5D8; font-variant-numeric: tabular-nums;
+    }
+    .pdf-stats dd { margin: 1.5mm 0 0; font-size: 7pt; line-height: 1.35; color: rgba(246,236,243,.75); }
+    .pdf-cover-meta { font-size: 8pt; color: rgba(246, 236, 243, 0.72); }
+    .pdf-cover-meta b { color: #F6ECF3; }
+
+    /* ── Gövde: her ana bölüm kendi sayfasında başlasın ─────────────── */
+    /* İçerik bölümlerinin ekran zeminleri kalksın — ama kapaklar ve alıntı
+       blokları kendi rengini korusun, yoksa açık metin beyaza basılır. */
+    section:not(.pdf-cover):not(.pdf-back):not(.kat-quote) {
+      padding-block: 0 !important; background: #fff !important;
+    }
+    /* Alıntı zaten kendi sayfasına düşüyordu; üçte bir dolu bırakmak yerine
+       sayfayı kaplayan kasıtlı bir duraklamaya çevrildi. */
+    .kat-quote {
+      width: 210mm; height: 297mm; box-sizing: border-box;
+      margin: 0; padding: 0 24mm !important; border: 0;
+      display: flex; align-items: center;
+    }
+    .kat-quote blockquote { max-width: 20ch; }
+    .kat-quote p { font-size: 34pt; }
+    .kat-quote cite { margin-top: 8mm; font-size: 8pt; }
+    .container-site { padding-inline: 0 !important; max-width: none !important; }
+    #danismanlik, #atolyeler, #kocluk, #egitimler, .pdf-back { break-before: page; }
+    section + section { margin-top: 9mm; }
+    #danismanlik, #atolyeler, #kocluk, #egitimler, .pdf-back { margin-top: 0; }
+
+    /* Başlık bloğu altındaki içerikten kopmasın */
+    /* Başlık öbeği içeriğinden kopmasın — eyebrow tek başına sayfa dibinde
+       kalıyordu. */
+    .sec-head-art, .kat-h2, .series-head, .eyebrow { break-after: avoid; }
+    /* Dört kazanım 2×2 otursun; 3+1 kırılınca boş hücre gri görünüyordu. */
+    .gains { grid-template-columns: repeat(2, 1fr) !important; background: #fff; }
+    .longs { grid-template-columns: repeat(3, 1fr) !important; }
+    .module, .long, .gain, .svc, .steps li, .csteps li, .ticks li,
+    .kat-quote, .sec-head-art, .cv, .trainer, .gains, .steps { break-inside: avoid; }
+    p, li { orphans: 3; widows: 3; }
+
+    /* Ekranda iki sütun olan bloklar basılıyken de iki sütun kalsın */
+    .two-col { gap: 8mm; }
+
+    /* ── Arka kapak ────────────────────────────────────────────────── */
+    .pdf-back {
+      position: relative; overflow: hidden;
+      width: 210mm; height: 297mm; box-sizing: border-box;
+      background: linear-gradient(158deg, #3D2150 0%, #281536 100%);
+      color: #F6ECF3;
+      /* Sayfa kenar boşluklarını geri alıp kenardan kenara bas */
+      margin: 0; padding: 34mm 20mm;
+      display: flex; align-items: center;
+    }
+    .pdf-back .pdf-back-tangle {
+      position: absolute; z-index: 0; left: -16%; bottom: -18%;
+      width: 62%; height: auto; color: #C5A5D8; opacity: 0.18;
+    }
+    .pdf-back-inner { position: relative; z-index: 1; }
+    .pdf-back h2 {
+      font-family: var(--font-display); font-weight: 300; color: #F6ECF3;
+      font-size: 24pt; line-height: 1.15; letter-spacing: -0.03em; max-width: 16ch;
+    }
+    .pdf-back > div > p { margin-top: 5mm; max-width: 95mm; font-size: 10pt; line-height: 1.6; color: rgba(246,236,243,.78); }
+    .pdf-contact {
+      margin: 12mm 0 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 6mm 10mm; max-width: 120mm;
+    }
+    .pdf-contact dt { font-size: 6.5pt; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #C5A5D8; }
+    .pdf-contact dd { margin: 1.5mm 0 0; font-size: 10pt; font-weight: 600; color: #F6ECF3; }
+    .pdf-back-note {
+      margin-top: 14mm !important; padding-top: 5mm; border-top: 0.3mm solid rgba(246,236,243,.2);
+      font-size: 7.5pt !important; line-height: 1.5; color: rgba(246,236,243,.6) !important; max-width: 130mm !important;
+    }
+
     a[href^='/']::after, a[href^='http']::after { content: ''; }
   }
+
+  /* Kapak ve arka kapak ekranda görünmez */
+  .print-only { display: none; }
 </style>
