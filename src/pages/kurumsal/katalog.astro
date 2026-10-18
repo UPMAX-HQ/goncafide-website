@@ -1,6 +1,7 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import JsonLd from '../../components/seo/JsonLd.astro';
+import Tangle from '../../components/brand/Tangle.astro';
 
 const PDF = '/gonca-fide-kurumsal-katalog.pdf';
 
@@ -251,9 +252,17 @@ const cv = [
 ];
 
 const longs = [
-  { t: 'Anda Kal Canda Kal', d: 'Şiddetsiz İletişim’e giriş ve temel beceri programı. Dört adım, şefkati engelleyenler, empati ve dürüstçe ifade, “hayır” ve “evet” demenin yolları.', m: [['Süre', '36 saat'], ['Seviye', 'Başlangıç'], ['Format', 'Hibrit']] },
-  { t: 'Anahtar Ayrımlar', d: '54 anahtar ayrımı sistematik olarak ele alan derinleşme programı. Bu kataloğun dört serisi bu programdan gelir. 8. yılında sürüyor.', m: [['Süre', '82,5 saat'], ['Oturum', '33'], ['Seviye', 'Orta-İleri']] },
-  { t: 'Anlaşmazlık Dönüştürme', d: 'Arabuluculuk, üçüncü taraf empatisi, grup dinamiklerinde çatışma ve sistemik anlaşmazlıklar. Danışmanlık hizmetinin eğitim karşılığı.', m: [['Süre', '60 saat'], ['Oturum', '12'], ['Seviye', 'İleri']] },
+  { img: '/images/programlar/anda-kal-canda-kal.jpg', t: 'Anda Kal Canda Kal', d: 'Şiddetsiz İletişim’e giriş ve temel beceri programı. Dört adım, şefkati engelleyenler, empati ve dürüstçe ifade, “hayır” ve “evet” demenin yolları.', m: [['Süre', '36 saat'], ['Seviye', 'Başlangıç'], ['Format', 'Hibrit']] },
+  { img: '/images/programlar/anahtar-ayrimlar.jpg', t: 'Anahtar Ayrımlar', d: '54 anahtar ayrımı sistematik olarak ele alan derinleşme programı. Bu kataloğun dört serisi bu programdan gelir. 8. yılında sürüyor.', m: [['Süre', '82,5 saat'], ['Oturum', '33'], ['Seviye', 'Orta-İleri']] },
+  { img: '/images/programlar/anlasmazlik-donusturme.jpg', t: 'Anlaşmazlık Dönüştürme', d: 'Arabuluculuk, üçüncü taraf empatisi, grup dinamiklerinde çatışma ve sistemik anlaşmazlıklar. Danışmanlık hizmetinin eğitim karşılığı.', m: [['Süre', '60 saat'], ['Oturum', '12'], ['Seviye', 'İleri']] },
+];
+
+/** Katalogda göz tutacak rakamlar — hepsi belgelerden doğrulanabilir. */
+const stats = [
+  { n: '1.500+', l: 'saat Şiddetsiz İletişim deneyimi' },
+  { n: '54', l: 'anahtar ayrım' },
+  { n: '66', l: 'oturumluk müfredat' },
+  { n: '8.', l: 'yılında süren program' },
 ];
 
 const formats = [
@@ -271,13 +280,14 @@ const formats = [
 
   <!-- Hero -->
   <section class="kat-hero">
+    <Tangle class="kat-tangle" />
     <div class="container-site">
       <p class="eyebrow mb-4">Kurumsal Eğitim Kataloğu</p>
       <h1>Kurumlar için <em>Şiddetsiz İletişim</em></h1>
       <p class="kat-lede">
-        Ekiplerin birbirini suçlamadan konuşabildiği, anlaşmazlığın bastırılmak yerine
-        dönüştürüldüğü bir iletişim kültürü için üç ayrı çalışma biçimi:
-        bire bir koçluk, anlaşmazlık danışmanlığı ve eğitimler.
+        Tıkanmış bir anlaşmazlığı dönüştürmekten tek oturumluk atölyelere, bire bir
+        koçluktan uzun soluklu programlara — ekiplerin birbirini suçlamadan
+        konuşabildiği bir iletişim kültürü için dört ayrı çalışma biçimi.
       </p>
       <div class="kat-actions no-print">
         <a class="btn-primary" href={PDF} download>
@@ -293,6 +303,20 @@ const formats = [
         <p>1.500+ saat Şiddetsiz İletişim deneyimi</p>
         <p><b>2026–2027</b> kataloğu</p>
       </div>
+    </div>
+  </section>
+
+  <!-- Rakamlar -->
+  <section class="kat-stats">
+    <div class="container-site">
+      <dl class="stats">
+        {stats.map((st) => (
+          <div>
+            <dt>{st.n}</dt>
+            <dd>{st.l}</dd>
+          </div>
+        ))}
+      </dl>
     </div>
   </section>
 
@@ -453,6 +477,16 @@ const formats = [
     </div>
   </section>
 
+  <!-- Alıntı -->
+  <section class="kat-quote">
+    <Tangle class="kat-quote-tangle" />
+    <div class="container-site">
+      <blockquote>
+        <p>Bastırılan anlaşmazlık geri döner; <em>duyulan anlaşmazlık dönüşür.</em></p>
+      </blockquote>
+    </div>
+  </section>
+
   <!-- 03 · Bire bir empatik koçluk -->
   <section class="section-padding" id="kocluk">
     <div class="container-site">
@@ -576,7 +610,9 @@ const formats = [
       </p>
       <div class="longs">
         {longs.map((l) => (
-          <article class="long">
+          <article class="long long-img">
+            <img src={l.img} alt={`${l.t} programı simgesi`} width="800" height="800"
+                 loading="lazy" decoding="async" />
             <h3>{l.t}</h3>
             <p>{l.d}</p>
             <dl>
@@ -585,6 +621,17 @@ const formats = [
           </article>
         ))}
       </div>
+    </div>
+  </section>
+
+  <!-- Alıntı -->
+  <section class="kat-quote kat-quote-alt">
+    <Tangle class="kat-quote-tangle" />
+    <div class="container-site">
+      <blockquote>
+        <p>Gönülsüz bir “evet”, <em>pahalı bir “hayır”dan daha pahalıdır.</em></p>
+        <cite>Marshall Rosenberg</cite>
+      </blockquote>
     </div>
   </section>
 
@@ -789,12 +836,12 @@ const formats = [
     gap: 0.4rem; box-shadow: var(--shadow-card);
   }
   .svc-ic {
-    width: 2.75rem; height: 2.75rem; border-radius: 0.8rem;
+    width: 3.4rem; height: 3.4rem; border-radius: 1rem;
     display: grid; place-items: center;
     background: var(--color-plum-50); color: var(--color-plum-600);
     border: 1px solid var(--color-plum-100);
   }
-  .svc-ic svg { width: 1.5rem; height: 1.5rem; }
+  .svc-ic svg { width: 1.85rem; height: 1.85rem; }
   .svc-kind {
     font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--color-orchid-500); font-variant-numeric: tabular-nums;
@@ -848,6 +895,79 @@ const formats = [
   .csteps b { font-weight: 600; color: var(--color-ink); }
   .csteps span { font-size: 0.9rem; color: var(--color-ink-muted); line-height: 1.6; }
 
+  /* Çizgi yumağı — kahramanda ve alıntı bloklarında doku */
+  /* Motif alt bileşenin içinde olduğu için sayfanın kapsam niteliğini almaz;
+     :global olmadan kural hiç eşleşmez. Bölümle birlikte yazıldı, çünkü
+     `.kat-hero > *` aynı öğeye position:relative atıyor. */
+  .kat-hero :global(.kat-tangle) {
+    position: absolute; z-index: 0; pointer-events: none;
+    right: -6rem; top: 50%; translate: 0 -50%;
+    width: 26rem; max-width: 46%; height: auto;
+    color: var(--color-plum-300); opacity: 0.2;
+  }
+  @media (max-width: 820px) {
+    .kat-hero :global(.kat-tangle) {
+      right: -7rem; top: auto; bottom: -5rem; translate: none;
+      width: 20rem; max-width: 70%; opacity: 0.14;
+    }
+  }
+
+  /* Rakam şeridi — sayfanın ilk görsel duraklaması */
+  .kat-stats {
+    background: var(--color-plum-800); color: var(--color-cream);
+    padding-block: clamp(1.9rem, 3.5vw, 2.8rem);
+  }
+  .stats {
+    margin: 0; display: grid; gap: 1.5rem 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  }
+  .stats > div { display: flex; flex-direction: column; gap: 0.3rem; }
+  .stats dt {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem); line-height: 1;
+    color: var(--color-plum-300); font-variant-numeric: tabular-nums;
+  }
+  .stats dd {
+    margin: 0; font-size: 0.85rem; line-height: 1.45;
+    color: rgba(246, 236, 243, 0.78); max-width: 22ch;
+  }
+
+  /* Alıntı — uzun metin bloklarını bölen nefes */
+  .kat-quote {
+    position: relative; overflow: hidden;
+    background: var(--color-surface);
+    padding-block: clamp(3rem, 6vw, 5rem);
+    border-block: 1px solid var(--color-border);
+  }
+  .kat-quote-alt { background: var(--color-plum-50); }
+  .kat-quote :global(.kat-quote-tangle) {
+    position: absolute; z-index: 0; pointer-events: none;
+    left: -5rem; top: 50%; translate: 0 -50%;
+    width: 20rem; max-width: 38%; height: auto;
+    color: var(--color-plum-400); opacity: 0.17;
+  }
+  .kat-quote .container-site { position: relative; z-index: 1; }
+  .kat-quote blockquote { margin: 0; max-width: 24ch; }
+  .kat-quote p {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(1.6rem, 1.2rem + 2.2vw, 3rem); line-height: 1.18;
+    letter-spacing: -0.03em; color: var(--color-plum-800); text-wrap: balance;
+  }
+  .kat-quote em { font-style: italic; color: var(--color-orchid-500); }
+  .kat-quote cite {
+    display: block; margin-top: 1.1rem; font-style: normal;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--color-ink-faint);
+  }
+
+  /* Uzun program kartları — Gonca'nın kendi program simgeleriyle */
+  .long-img { padding-top: 0; overflow: hidden; }
+  .long-img img {
+    width: calc(100% + 2.7rem); margin: 0 -1.35rem 0.4rem;
+    max-width: calc(100% + 2.7rem); height: auto; display: block;
+    border-bottom: 1px solid var(--color-plum-100);
+  }
+
   .print-only { display: none; }
 
   @media (max-width: 640px) {
@@ -863,7 +983,10 @@ const formats = [
     header, footer, #mobile-menu, .no-print, [data-print-hide] { display: none !important; }
     .print-only { display: block !important; }
     body { background: #fff; }
-    .kat-hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .kat-hero, .kat-stats, .kat-quote {
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .kat-quote { break-inside: avoid; }
     /* Bölümler bir sayfaya sığmayacak kadar büyük; bütünlüklerini zorlamak
        sayfa sonlarında yarım sayfalık boşluklar bırakıyor. Yalnızca küçük,
        tekrar eden öğeler bölünmesin. */
