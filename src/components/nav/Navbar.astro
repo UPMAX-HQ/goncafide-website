@@ -18,13 +18,13 @@ const pathname = Astro.url.pathname;
       <Logo class="flex-shrink-0" />
 
       <!-- Desktop nav links -->
-      <ul class="hidden lg:flex items-center gap-1" role="list">
+      <ul class="hidden lg:flex items-center gap-0.5 xl:gap-1" role="list">
         {navLinks.map((link) => (
           <li>
             <a
               href={link.href}
               class:list={[
-                'px-3 py-2 rounded-lg text-sm font-body transition-colors',
+                'px-2 xl:px-3 py-2 rounded-lg text-sm font-body whitespace-nowrap transition-colors',
                 pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
                   ? 'text-[var(--color-plum-800)] font-medium bg-[var(--color-plum-50)]'
                   : 'text-[var(--color-ink-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface)]'
@@ -40,7 +40,7 @@ const pathname = Astro.url.pathname;
       <div class="hidden lg:flex items-center gap-3">
         <a
           href={contactHref}
-          class="px-5 py-2.5 rounded-xl bg-[var(--color-orchid-500)] text-white font-body font-semibold text-sm tracking-wide hover:bg-[var(--color-orchid-600)] transition-colors min-h-[44px] flex items-center"
+          class="px-4 xl:px-5 py-2.5 rounded-xl whitespace-nowrap bg-[var(--color-orchid-500)] text-white font-body font-semibold text-sm tracking-wide hover:bg-[var(--color-orchid-600)] transition-colors min-h-[44px] flex items-center"
         >
           {t('nav.cta')}
         </a>
