@@ -371,7 +371,8 @@ const formats = [
         {services.map((sv, i) => (
           <li class="svc">
             <span class="svc-ic" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+              <Tangle class="svc-ic-tangle" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"
                    stroke-linecap="round" stroke-linejoin="round" set:html={icons[sv.icon]} />
             </span>
             <p class="svc-kind">{String(i + 1).padStart(2, '0')} · {sv.n}</p>
@@ -494,7 +495,7 @@ const formats = [
       <div class="sec-head-art">
         <div class="sec-art" aria-hidden="true">
           <Tangle class="sec-art-tangle" />
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" set:html={icons.spark} />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons.spark} />
         </div>
         <div>
           <p class="eyebrow mb-3">02 · Atölye</p>
@@ -512,7 +513,7 @@ const formats = [
           <li class="module">
             <div class="module-head">
               <span class="module-ic" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                      stroke-linecap="round" stroke-linejoin="round" set:html={icons[m.icon]} />
               </span>
               <h4>{m.title}</h4>
@@ -546,7 +547,7 @@ const formats = [
       <div class="sec-head-art">
         <div class="sec-art" aria-hidden="true">
           <Tangle class="sec-art-tangle" />
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" set:html={icons.listen} />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons.listen} />
         </div>
         <div>
           <p class="eyebrow mb-3">03 · Bire bir</p>
@@ -647,7 +648,7 @@ const formats = [
               <li class="module">
                 <div class="module-head">
                   <span class="module-ic" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                          stroke-linecap="round" stroke-linejoin="round" set:html={icons[m.icon]} />
                   </span>
                   <h4>{m.title}</h4>
@@ -853,16 +854,16 @@ const formats = [
   .module:last-child { border-bottom: 0; }
   .module-head { display: flex; align-items: center; gap: 0.75rem; }
   .module-ic {
-    flex-shrink: 0; width: 2.25rem; height: 2.25rem; border-radius: 0.65rem;
+    flex-shrink: 0; width: 2.9rem; height: 2.9rem; border-radius: 0.45rem;
     display: grid; place-items: center;
-    background: var(--color-plum-50); color: var(--color-plum-600);
-    border: 1px solid var(--color-plum-100);
+    background: var(--color-canvas); color: var(--color-plum-700);
+    border: 0;
   }
   .kat-tint .module-ic { background: #fff; }
-  .module-ic svg { width: 1.25rem; height: 1.25rem; }
+  .module-ic svg { width: 2.1rem; height: 2.1rem; }
   /* İkon varken metin blokları ikonun hizasından devam etsin */
   .module-head + .module-line, .module-head ~ .module-body,
-  .module-head ~ .module-meta { padding-left: 3rem; }
+  .module-head ~ .module-meta { padding-left: 3.5rem; }
   @media (max-width: 560px) {
     .module-head + .module-line, .module-head ~ .module-body,
     .module-head ~ .module-meta { padding-left: 0; }
@@ -915,13 +916,20 @@ const formats = [
     padding: 1.6rem 1.4rem; display: grid; grid-template-rows: subgrid; grid-row: span 5;
     gap: 0.4rem; box-shadow: var(--shadow-card);
   }
+  /* Gonca'nın kart simgelerinden örneklendi: blush zemin (#FEF4F3), koyu mor
+     sembol (#512C6A–#6A1677), arkada açık lila çizgi yumağı (#DCC1E2). */
   .svc-ic {
-    width: 3.4rem; height: 3.4rem; border-radius: 1rem;
+    position: relative; overflow: hidden;
+    width: 4.1rem; height: 4.1rem; border-radius: 0.55rem;
     display: grid; place-items: center;
-    background: var(--color-plum-50); color: var(--color-plum-600);
-    border: 1px solid var(--color-plum-100);
+    background: var(--color-canvas); color: var(--color-plum-700);
+    border: 0;
   }
-  .svc-ic svg { width: 1.85rem; height: 1.85rem; }
+  .svc-ic :global(.svc-ic-tangle) {
+    position: absolute; inset: -72%; width: 244%; height: 244%;
+    color: var(--color-plum-300); opacity: 0.75;
+  }
+  .svc-ic > svg:not(.svc-ic-tangle) { position: relative; z-index: 1; width: 3rem; height: 3rem; }
   .svc-kind {
     font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--color-orchid-500); font-variant-numeric: tabular-nums;
@@ -1057,11 +1065,11 @@ const formats = [
   .sec-art {
     position: relative; flex-shrink: 0; overflow: hidden;
     width: clamp(5.5rem, 11vw, 8.5rem); aspect-ratio: 1;
-    border-radius: 1.25rem;
-    background: var(--color-plum-50);
-    border: 1px solid var(--color-plum-100);
+    border-radius: 0.75rem;
+    background: var(--color-canvas);
+    border: 0;
     display: grid; place-items: center;
-    color: var(--color-plum-500);
+    color: var(--color-plum-700);
   }
   .kat-tint .sec-art { background: #fff; }
   .sec-art img {
@@ -1070,12 +1078,12 @@ const formats = [
   }
   .sec-art > svg:not(.sec-art-tangle) {
     position: relative; z-index: 1;
-    width: 48%; height: 48%; color: var(--color-plum-600);
+    width: 72%; height: 72%; color: var(--color-plum-700);
   }
   .sec-art :global(.sec-art-tangle) {
-    position: absolute; inset: -18%; z-index: 0;
-    width: 136%; height: 136%;
-    color: var(--color-plum-400); opacity: 0.3;
+    position: absolute; inset: -40%; z-index: 0;
+    width: 180%; height: 180%;
+    color: var(--color-plum-300); opacity: 0.7;
   }
   @media (max-width: 560px) {
     .sec-head-art { gap: 0.9rem; }
