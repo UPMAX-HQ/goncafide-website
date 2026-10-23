@@ -2,6 +2,7 @@
 import PageLayout from '../../layouts/PageLayout.astro';
 import JsonLd from '../../components/seo/JsonLd.astro';
 import Tangle from '../../components/brand/Tangle.astro';
+import TangleSprite from '../../components/brand/TangleSprite.astro';
 
 const PDF = '/gonca-fide-kurumsal-katalog.pdf';
 
@@ -278,6 +279,8 @@ const formats = [
 >
   <JsonLd slot="jsonld" schema={schema} />
 
+  <TangleSprite />
+
   <!-- PDF kapağı — yalnızca baskıda görünür -->
   <section class="pdf-cover print-only">
     <Tangle class="pdf-cover-tangle" />
@@ -513,6 +516,7 @@ const formats = [
           <li class="module">
             <div class="module-head">
               <span class="module-ic" aria-hidden="true">
+                <Tangle class="module-ic-tangle" />
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                      stroke-linecap="round" stroke-linejoin="round" set:html={icons[m.icon]} />
               </span>
@@ -648,6 +652,7 @@ const formats = [
               <li class="module">
                 <div class="module-head">
                   <span class="module-ic" aria-hidden="true">
+                    <Tangle class="module-ic-tangle" />
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                          stroke-linecap="round" stroke-linejoin="round" set:html={icons[m.icon]} />
                   </span>
@@ -853,14 +858,23 @@ const formats = [
   .module { padding: 1.5rem 0; border-bottom: 1px solid var(--color-border); }
   .module:last-child { border-bottom: 0; }
   .module-head { display: flex; align-items: center; gap: 0.75rem; }
+  /* Hizmet ikonuyla aynı kurgu — blush kare, arkada yumak, tok sembol —
+     yalnızca satır içinde durabilecek kadar küçültülmüş hâli. */
   .module-ic {
+    position: relative; overflow: hidden;
     flex-shrink: 0; width: 2.9rem; height: 2.9rem; border-radius: 0.45rem;
     display: grid; place-items: center;
     background: var(--color-canvas); color: var(--color-plum-700);
     border: 0;
   }
   .kat-tint .module-ic { background: #fff; }
-  .module-ic svg { width: 2.1rem; height: 2.1rem; }
+  .module-ic :global(.module-ic-tangle) {
+    position: absolute; inset: -72%; width: 244%; height: 244%;
+    color: var(--color-plum-300); opacity: 0.7;
+  }
+  .module-ic > svg:not(.module-ic-tangle) {
+    position: relative; z-index: 1; width: 2.1rem; height: 2.1rem;
+  }
   /* İkon varken metin blokları ikonun hizasından devam etsin */
   .module-head + .module-line, .module-head ~ .module-body,
   .module-head ~ .module-meta { padding-left: 3.5rem; }
